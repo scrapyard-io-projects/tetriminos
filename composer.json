@@ -1,0 +1,100 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "scrapyard-io/scrapyard-io",
+    "type": "project",
+    "description": "The skeleton application for the ScrapyardIO framework.",
+    "keywords": [
+        "scrapyard-io",
+        "framework"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.4|^8.5|^8.6",
+        "microscrap/metal-gfx": "^0.7.3",
+        "microscrap/ogx": "^0.7.2",
+        "microscrap/phpdafruit-gfx": "^0.7.0",
+        "microscrap/sdl3-gfx": "^0.7.2",
+        "microscrap/vulkan": "^0.7.1",
+        "microscrap/vulkan-gfx": "^0.7.0",
+        "scrapyard-io/autopen": "^0.7.0",
+        "scrapyard-io/framework": "^0.7.0",
+        "scrapyard-io/game-engine": "^0.7.0",
+        "scrapyard-io/gpio-framework": "^0.7.0",
+        "scrapyard-io/tubes": "^0.7.0",
+        "scrapyard-io/ux": "^0.7.0",
+        "scrapyard-io/wrench": "^0.7.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.23",
+        "guzzlehttp/psr7": "^2.0",
+        "league/flysystem-path-prefixing": "^3.25.1",
+        "league/flysystem-read-only": "^3.25.1",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "pestphp/pest": "^4.7"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "microscrap/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "install-mac": [
+            "composer install --ignore-platform-req=ext-cuda --ignore-platform-req=ext-glfw"
+        ],
+        "install-jetson": [
+            "composer install --ignore-platform-req=ext-metal"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout"
+        ],
+        "test": [
+            "@php vendor/bin/pest"
+        ],
+        "post-autoload-dump": [
+            "Fabricate\\Core\\ComposerScripts::postAutoloadDump",
+            "@php workshop package:discover --ansi"
+        ],
+        "post-update-cmd": [],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [],
+        "pre-package-uninstall": [
+            "Fabricate\\Core\\ComposerScripts::prePackageUninstall"
+        ]
+    },
+    "extra": {
+        "scrapyard-io": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
